@@ -10,29 +10,40 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="og.png" />
   <style>
-    :root{--bg:#F5EFE6;--card:#FFF;--text:#1F2937;--muted:#6B7280;--accent:#C89B65;--ring:rgba(200,155,101,.35);--radius:18px;--shadow:0 6px 16px rgba(0,0,0,.08)}
+    :root{--bg:#F5EFE6;--card:rgba(255,255,255,.35);--card-hover:rgba(255,255,255,.5);--text:#1F2937;--muted:#6B7280;--accent:#C89B65;--ring:rgba(200,155,101,.35);--radius:18px;--shadow:0 4px 12px rgba(0,0,0,.06)}
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text)}
     .container{max-width:680px;margin:auto;padding:24px 16px 64px;animation:fadeIn .3s ease-out both}
+    .avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 4px 12px rgba(102,126,234,.25)}
     header{text-align:center;margin:8px 0 20px}
     h1{margin:10px 0 6px;font-size:24px}
     .subtitle{color:var(--muted);font-size:15px}
-    .card{background:var(--card);border-radius:calc(var(--radius)+2px);box-shadow:var(--shadow);padding:14px}
-    .btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--card);border:1.5px solid #E5E7EB;border-radius:var(--radius);padding:14px 16px;margin:10px 0;text-decoration:none;color:var(--text);transition:transform .08s ease,box-shadow .12s ease,border-color .2s ease}
-    .btn:hover{border-color:#D1D5DB;transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.06)}
-    .btn:active{transform:scale(.98)}
-    .icon{width:22px;height:22px}
+    .card{background:var(--card);border-radius:calc(var(--radius)+2px);box-shadow:var(--shadow);padding:14px;backdrop-filter:blur(10px)}
+    .btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--card);border:1.5px solid #E5E7EB;border-radius:var(--radius);padding:14px 16px;margin:10px 0;text-decoration:none;color:var(--text);transition:all .2s ease;cursor:pointer}
+    .btn:hover{border-color:var(--accent);background:var(--card-hover);transform:translateY(-2px);box-shadow:0 6px 16px rgba(200,155,101,.15)}
+    .btn:active{transform:scale(.97)}
+    .left{display:flex;align-items:center;gap:12px}
+    .icon{width:22px;height:22px;flex-shrink:0;display:block}
     .open-arrow{width:18px;height:18px;opacity:.6}
-    .lang-toggle{position:fixed;top:14px;right:14px;background:var(--card);border:1px solid #E5E7EB;border-radius:999px;padding:6px 10px;font-size:13px;color:var(--muted);box-shadow:var(--shadow);cursor:pointer}
-    .lang-menu{display:none;position:fixed;top:50px;right:14px;background:var(--card);border:1px solid #E5E7EB;border-radius:12px;box-shadow:var(--shadow)}
-    .lang-menu button{display:block;width:160px;padding:10px 12px;background:#fff;border:0;text-align:left;font-size:14px;color:var(--text);cursor:pointer}
-    .lang-menu button:hover{background:#F9FAFB}
+    .lang-toggle{position:fixed;top:14px;right:14px;background:var(--card);border:1px solid #E5E7EB;border-radius:999px;padding:6px 10px;font-size:13px;color:var(--muted);box-shadow:var(--shadow);cursor:pointer;z-index:10;backdrop-filter:blur(10px)}
+    @media(max-width:640px){.lang-toggle{top:60px}}
+    .lang-menu{display:none;position:fixed;top:50px;right:14px;background:var(--card);border:1px solid #E5E7EB;border-radius:12px;box-shadow:var(--shadow);z-index:11;backdrop-filter:blur(10px)}
+    @media(max-width:640px){.lang-menu{top:96px}}
+    .lang-menu button{display:block;width:160px;padding:10px 12px;background:transparent;border:0;text-align:left;font-size:14px;color:var(--text);cursor:pointer}
+    .lang-menu button:hover{background:rgba(200,155,101,.1)}
     footer{text-align:center;margin:18px 0 0;color:var(--muted);font-size:12px}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.25);display:none;align-items:flex-end;z-index:50}
-    .sheet{width:100%;max-width:680px;background:#fff;border-top-left-radius:18px;border-top-right-radius:18px;box-shadow:0 -8px 24px rgba(0,0,0,.18);padding:10px}
+    @media(max-width:640px){footer{font-size:11px}}
+    .footer-simple{display:none}
+    @media(max-width:640px){.footer-full{display:none}.footer-simple{display:block}}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);display:none;z-index:50}
+    .overlay.show{display:flex;align-items:center;justify-content:center}
+    .sheet{width:100%;max-width:420px;background:var(--bg);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,.2);padding:20px;backdrop-filter:blur(10px);margin:16px}
+    @media(max-width:640px){.overlay.show{align-items:flex-end;justify-content:stretch}.sheet{max-width:680px;border-radius:18px 18px 0 0;margin:0;padding:10px}}
     .sheet h3{margin:6px 10px 10px;font-size:16px}
-    .sheet-btn{width:100%;border:1px solid #E5E7EB;background:#fff;border-radius:12px;padding:12px 14px;text-align:left;font-size:15px;margin:8px 0;display:flex;align-items:center;gap:10px}
-    .sheet-btn.cancel{background:#F9FAFB}
+    .sheet-btn{width:100%;border:1px solid rgba(200,155,101,.2);background:var(--card);border-radius:12px;padding:12px 14px;text-align:left;font-size:15px;margin:8px 0;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .2s ease}
+    .sheet-btn.cancel{background:rgba(200,155,101,.08)}
+    .sheet-btn:hover{background:var(--card-hover);transform:translateY(-1px)}
+    .sheet-icon{width:20px;height:20px;flex-shrink:0}
     .toast{position:fixed;bottom:18px;right:18px;background:var(--text);color:#fff;padding:10px 12px;border-radius:10px;opacity:0;transform:translateY(10px);transition:all .25s ease;z-index:60;font-size:14px}
     .toast.show{opacity:1;transform:translateY(0)}
     @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -48,6 +59,7 @@
 
   <div class="container">
     <header>
+      <div class="avatar">👨‍💻</div>
       <h1 id="title">嗨，我是無季穎，很高興認識你</h1>
       <div class="subtitle" id="subtitle">逐夢的年輕人</div>
     </header>
@@ -94,16 +106,28 @@
       </button>
     </div>
 
-    <footer>© Wu Jiying 2025 ・ 本頁面為個人連結名片，所有外部連結將在新分頁開啟。</footer>
+    <footer>
+      <div class="footer-full">© Wu Jiying 2025 ・ 本頁面為個人連結名片，所有外部連結將在新分頁開啟。</div>
+      <div class="footer-simple">© Wu Jiying 2025</div>
+    </footer>
   </div>
 
   <!-- Email sheet -->
   <div class="overlay" id="overlay" role="dialog" aria-modal="true">
     <div class="sheet" id="emailSheet">
       <h3>選擇 Email 操作</h3>
-      <button class="sheet-btn" id="copyEmail">📋 複製 Email 位址</button>
-      <button class="sheet-btn" id="mailtoEmail">✉️ 跳轉到 Gmail（或預設郵件）</button>
-      <button class="sheet-btn cancel" id="cancelSheet">取消</button>
+      <button class="sheet-btn" id="copyEmail">
+        <svg class="sheet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>複製 Email 位址</span>
+      </button>
+      <button class="sheet-btn" id="mailtoEmail">
+        <svg class="sheet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        <span>跳轉到 Gmail（或預設郵件）</span>
+      </button>
+      <button class="sheet-btn cancel" id="cancelSheet">
+        <svg class="sheet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <span>取消</span>
+      </button>
     </div>
   </div>
 
@@ -116,9 +140,9 @@
     const copyEmail=qs("#copyEmail"), mailtoEmail=qs("#mailtoEmail"), cancelSheet=qs("#cancelSheet"), toast=qs("#toast");
 
     // 開關底部面板
-    emailBtn.onclick=()=>{ overlay.style.display="flex"; document.body.style.overflow="hidden"; };
-    cancelSheet.onclick=()=>{ overlay.style.display="none"; document.body.style.overflow=""; };
-    overlay.onclick=(e)=>{ if(e.target===overlay){ overlay.style.display="none"; document.body.style.overflow=""; } };
+    emailBtn.onclick=()=>{ overlay.classList.add("show"); document.body.style.overflow="hidden"; };
+    cancelSheet.onclick=()=>{ overlay.classList.remove("show"); document.body.style.overflow=""; };
+    overlay.onclick=(e)=>{ if(e.target===overlay){ overlay.classList.remove("show"); document.body.style.overflow=""; } };
 
     // 複製 Email
     copyEmail.onclick=async()=>{
@@ -126,7 +150,7 @@
         const ta=document.createElement("textarea"); ta.value=EMAIL; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
       }
       toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"),1500);
-      overlay.style.display="none"; document.body.style.overflow="";
+      overlay.classList.remove("show"); document.body.style.overflow="";
     };
 
     // 開啟郵件：先嘗試 mailto，再以 Gmail Web 備援
@@ -153,7 +177,7 @@
         }
       }, 800);
 
-      overlay.style.display="none"; document.body.style.overflow="";
+      overlay.classList.remove("show"); document.body.style.overflow="";
     };
 
     // 語言切換
